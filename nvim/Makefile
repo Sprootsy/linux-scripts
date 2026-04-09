@@ -1,4 +1,3 @@
-
 .PHONY: install
 install:
 	test -d ${HOME}/.config || mkdir ${HOME}/.config
