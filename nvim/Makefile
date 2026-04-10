@@ -1,7 +1,7 @@
 .PHONY: install
 install:
 	test -d ${HOME}/.config || mkdir ${HOME}/.config
-	cp -vbR ../nvim ${HOME}/.config/
+	cp -vR ../nvim ${HOME}/.config/
 
 .PHONY: clean
 clean:
