@@ -1,9 +1,10 @@
 require("plugins.which-key")
+require("plugins.web-devicons")
 require("plugins.tokyonight")
 require("plugins.plenary")
-require("plugins.web-devicons")
 require("plugins.telescope")
 require("plugins.mason")
+-- LSP and autocomplete
 require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.blink")
