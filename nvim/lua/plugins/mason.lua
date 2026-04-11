@@ -36,3 +36,13 @@ vim.pack.add({
 		version = "main",
 	},
 })
+
+require("mason-tool-installer").setup({
+	ensure_installed = {
+		"tree-sitter-cli",
+	},
+	auto_update = false,
+	run_on_start = true, -- automatically install / update on startup
+	start_delay = 0, -- no delay
+	debounce_hours = 5, -- at least 5 hours between attempts to install/update
+})

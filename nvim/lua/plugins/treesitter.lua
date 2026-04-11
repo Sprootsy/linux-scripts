@@ -1,7 +1,3 @@
-local mason = require("mason.api.command")
-
-mason.MasonInstall("tree-sitter-cli")
-
 vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter.git",
     {
