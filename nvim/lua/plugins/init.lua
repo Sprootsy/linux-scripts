@@ -9,3 +9,7 @@ require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.blink")
 require("plugins.mini")
+
+-- Debuggers
+require("plugins.nio")
+require("plugins.dap")
