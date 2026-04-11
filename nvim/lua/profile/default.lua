@@ -12,7 +12,7 @@ vim.o.mouse = "a"
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-    vim.o.clipboard = "unnamedplus"
+	vim.o.clipboard = "unnamedplus"
 end)
 
 -- Enable undo/redo changes even after closing and reopening a file
@@ -77,17 +77,17 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
 vim.diagnostic.config({
-    update_in_insert = false,
-    severity_sort = true,
-    float = { border = "rounded", source = "if_many" },
-    underline = { severity = { min = vim.diagnostic.severity.WARN } },
+	update_in_insert = false,
+	severity_sort = true,
+	float = { border = "rounded", source = "if_many" },
+	underline = { severity = { min = vim.diagnostic.severity.WARN } },
 
-    -- Can switch between these as you prefer
-    virtual_text = true, -- Text shows up at the end of the line
-    virtual_lines = false, -- Text shows up underneath the line, with virtual lines
+	-- Can switch between these as you prefer
+	virtual_text = true, -- Text shows up at the end of the line
+	virtual_lines = false, -- Text shows up underneath the line, with virtual lines
 
-    -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
-    jump = { float = true },
+	-- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
+	jump = { float = true },
 })
 vim.keymap.set("n", "<C-q>", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
@@ -125,57 +125,82 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 --  Try it with `yap` in normal mode
 --  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("default-highlight-yank", { clear = true }),
-    callback = function()
-        vim.hl.on_yank()
-    end,
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("default-highlight-yank", { clear = true }),
+	callback = function()
+		vim.hl.on_yank()
+	end,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("default-lsp-attach", { clear = true }),
-    callback = function(event)
-        -- Rename the variable under your cursor.
-        vim.keymap.set("n", "grn", vim.lsp.buf.rename, { desc = "LSP: [R]e[n]ame", buffer = event.buf })
-        -- Execute a code action, usually your cursor needs to be on top of an error
-        -- or a suggestion from your LSP for this to activate.
-        vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { desc = "LSP: Goto [C]ode [A]ction", buffer = event.buf })
-        vim.keymap.set("n", "gd", vim.lsp.buf.declaration, { desc = "LSP: [G]oto [D]eclaration", buffer = event.buf })
+	group = vim.api.nvim_create_augroup("default-lsp-attach", { clear = true }),
+	callback = function(event)
+		-- Rename the variable under your cursor.
+		vim.keymap.set("n", "grn", vim.lsp.buf.rename, { desc = "LSP: [R]e[n]ame", buffer = event.buf })
+		-- Execute a code action, usually your cursor needs to be on top of an error
+		-- or a suggestion from your LSP for this to activate.
+		vim.keymap.set("n", "gca", vim.lsp.buf.code_action, { desc = "LSP: Goto [C]ode [A]ction", buffer = event.buf })
+		vim.keymap.set("n", "gd", vim.lsp.buf.declaration, { desc = "LSP: [G]oto [D]eclaration", buffer = event.buf })
 
-        -- The following two autocommands are used to highlight references of the
-        -- word under your cursor when your cursor rests there for a little while.
-        --    See `:help CursorHold` for information about when this is executed
-        -- When you move your cursor, the highlights will be cleared (the second autocommand).
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client:supports_method("textDocument/documentHighlight", event.buf) then
-            local highlight_augroup = vim.api.nvim_create_augroup("default-lsp-highlight", { clear = false })
-            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                buffer = event.buf,
-                group = highlight_augroup,
-                callback = vim.lsp.buf.document_highlight,
-            })
+		-- The following two autocommands are used to highlight references of the
+		-- word under your cursor when your cursor rests there for a little while.
+		--    See `:help CursorHold` for information about when this is executed
+		-- When you move your cursor, the highlights will be cleared (the second autocommand).
+		local client = vim.lsp.get_client_by_id(event.data.client_id)
+		if client and client:supports_method("textDocument/documentHighlight", event.buf) then
+			local highlight_augroup = vim.api.nvim_create_augroup("default-lsp-highlight", { clear = false })
+			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+				buffer = event.buf,
+				group = highlight_augroup,
+				callback = vim.lsp.buf.document_highlight,
+			})
 
-            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                buffer = event.buf,
-                group = highlight_augroup,
-                callback = vim.lsp.buf.clear_references,
-            })
+			vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+				buffer = event.buf,
+				group = highlight_augroup,
+				callback = vim.lsp.buf.clear_references,
+			})
 
-            vim.api.nvim_create_autocmd("LspDetach", {
-                group = vim.api.nvim_create_augroup("default-lsp-detach", { clear = true }),
-                callback = function(event2)
-                    vim.lsp.buf.clear_references()
-                    vim.api.nvim_clear_autocmds({ group = "default-lsp-highlight", buffer = event2.buf })
-                end,
-            })
-        end
-    end,
+			vim.api.nvim_create_autocmd("LspDetach", {
+				group = vim.api.nvim_create_augroup("default-lsp-detach", { clear = true }),
+				callback = function(event2)
+					vim.lsp.buf.clear_references()
+					vim.api.nvim_clear_autocmds({ group = "default-lsp-highlight", buffer = event2.buf })
+				end,
+			})
+		end
+
+		if client:supports_method("textDocument/implementation") then
+			-- Create a keymap for vim.lsp.buf.implementation
+		end
+		-- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
+		if client:supports_method("textDocument/completion") then
+			-- Optional: trigger autocompletion on EVERY keypress. May be slow!
+			-- local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+			-- client.server_capabilities.completionProvider.triggerCharacters = chars
+			vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+		end
+		-- Auto-format ("lint") on save.
+		-- Usually not needed if server supports "textDocument/willSaveWaitUntil".
+		if
+			not client:supports_method("textDocument/willSaveWaitUntil")
+			and client:supports_method("textDocument/formatting")
+		then
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("default-lsp-attach", { clear = false }),
+				buffer = event.buf,
+				callback = function()
+					vim.lsp.buf.format({ bufnr = event.buf, id = client.id, timeout_ms = 1000 })
+				end,
+			})
+		end
+	end,
 })
 
 -- autocomplete
 vim.cmd([[set completeopt+=menuone,noselect,popup]])
 vim.keymap.set("i", "<c-space>", function()
-    vim.lsp.completion.get()
+	vim.lsp.completion.get()
 end)
 
 -- Telescope fuzzy finder
@@ -197,38 +222,38 @@ vim.keymap.set("n", "<C-s>b", tele_bin.buffers, { desc = "[ ] Find existing buff
 -- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
 -- it is better explained there). This allows easily switching between pickers if you prefer using something else!
 vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("default-telescope-lsp-attach", { clear = true }),
-    callback = function(event)
-        local buf = event.buf
+	group = vim.api.nvim_create_augroup("default-telescope-lsp-attach", { clear = true }),
+	callback = function(event)
+		local buf = event.buf
 
-        -- Find references for the word under your cursor.
-        vim.keymap.set("n", "grr", tele_bin.lsp_references, { buffer = buf, desc = "[G]oto [R]eferences" })
+		-- Find references for the word under your cursor.
+		vim.keymap.set("n", "grr", tele_bin.lsp_references, { buffer = buf, desc = "[G]oto [R]eferences" })
 
-        -- Jump to the implementation of the word under your cursor.
-        -- Useful when your language has ways of declaring types without an actual implementation.
-        vim.keymap.set("n", "gri", tele_bin.lsp_implementations, { buffer = buf, desc = "[G]oto [I]mplementation" })
+		-- Jump to the implementation of the word under your cursor.
+		-- Useful when your language has ways of declaring types without an actual implementation.
+		vim.keymap.set("n", "gri", tele_bin.lsp_implementations, { buffer = buf, desc = "[G]oto [I]mplementation" })
 
-        -- Jump to the definition of the word under your cursor.
-        -- This is where a variable was first declared, or where a function is defined, etc.
-        -- To jump back, press <C-t>.
-        vim.keymap.set("n", "grd", tele_bin.lsp_definitions, { buffer = buf, desc = "[G]oto [D]efinition" })
+		-- Jump to the definition of the word under your cursor.
+		-- This is where a variable was first declared, or where a function is defined, etc.
+		-- To jump back, press <C-t>.
+		vim.keymap.set("n", "grd", tele_bin.lsp_definitions, { buffer = buf, desc = "[G]oto [D]efinition" })
 
-        -- Fuzzy find all the symbols in your current document.
-        -- Symbols are things like variables, functions, types, etc.
-        vim.keymap.set("n", "gO", tele_bin.lsp_document_symbols, { buffer = buf, desc = "Open Document Symbols" })
+		-- Fuzzy find all the symbols in your current document.
+		-- Symbols are things like variables, functions, types, etc.
+		vim.keymap.set("n", "gO", tele_bin.lsp_document_symbols, { buffer = buf, desc = "Open Document Symbols" })
 
-        -- Fuzzy find all the symbols in your current workspace.
-        -- Similar to document symbols, except searches over your entire project.
-        vim.keymap.set(
-            "n",
-            "gW",
-            tele_bin.lsp_dynamic_workspace_symbols,
-            { buffer = buf, desc = "Open Workspace Symbols" }
-        )
+		-- Fuzzy find all the symbols in your current workspace.
+		-- Similar to document symbols, except searches over your entire project.
+		vim.keymap.set(
+			"n",
+			"gW",
+			tele_bin.lsp_dynamic_workspace_symbols,
+			{ buffer = buf, desc = "Open Workspace Symbols" }
+		)
 
-        -- Jump to the type of the word under your cursor.
-        -- Useful when you're not sure what type a variable is and you want to see
-        -- the definition of its *type*, not where it was *defined*.
-        vim.keymap.set("n", "grt", tele_bin.lsp_type_definitions, { buffer = buf, desc = "[G]oto [T]ype Definition" })
-    end,
+		-- Jump to the type of the word under your cursor.
+		-- Useful when you're not sure what type a variable is and you want to see
+		-- the definition of its *type*, not where it was *defined*.
+		vim.keymap.set("n", "grt", tele_bin.lsp_type_definitions, { buffer = buf, desc = "[G]oto [T]ype Definition" })
+	end,
 })
