@@ -13,6 +13,7 @@ vim.pack.add({
         version = "v4.0.0",
     },
 })
+require("dapui").setup()
 
 local dap, dapui = require("dap"), require("dapui")
 dap.listeners.before.attach.dapui_config = function()
