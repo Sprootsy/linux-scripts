@@ -15,7 +15,7 @@ vim.schedule(function()
 		completion = {
 			-- By default, you may press `<c-space>` to show the documentation.
 			-- Optionally, set `auto_show = true` to show the documentation after a delay.
-			documentation = { auto_show = true, auto_show_delay_ms = 250 },
+			documentation = { auto_show = false, auto_show_delay_ms = 250 },
 			-- Manages the completion list and its behavior when selecting items.
 			list = {
 				-- Selects the first item automatically but does not insert it.
@@ -30,6 +30,20 @@ vim.schedule(function()
 		},
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
+
+			providers = {
+				lsp = {
+					name = "LSP",
+					module = "blink.cmp.sources.lsp",
+					enabled = true, -- Whether or not to enable the provider
+					timeout_ms = 2000,
+					score_offset = 2, -- Boost/penalize the score of the items
+					-- If this provider returns 0 items, it will fallback to these providers.
+					-- If multiple providers fallback to the same provider, all of the providers must return 0 items for it to fallback
+					-- default fallback is 'buffer'
+					fallbacks = { "buffer" },
+				},
+			},
 		},
 		fuzzy = { implementation = "lua" },
 		-- Shows a signature help window while you type arguments for a function
