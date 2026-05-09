@@ -14,3 +14,7 @@ require("plugins.mini")
 -- Debuggers
 require("plugins.nio")
 require("plugins.dap")
+
+-- Nice to have
+require("plugins.nui")
+require("plugins.noice")
