@@ -1,10 +1,11 @@
 require("nvim-web-devicons")
+-- provides file system navigation sidebar
 
 vim.pack.add({
-    {
-        src = "https://github.com/nvim-tree/nvim-tree.lua",
-        version = "v1.17",
-    },
+	{
+		src = "https://github.com/nvim-tree/nvim-tree.lua",
+		version = "v1.17",
+	},
 })
 
 -- disable netrw at the very start of your init.lua
