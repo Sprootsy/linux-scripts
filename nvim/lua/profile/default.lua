@@ -132,6 +132,34 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- NVIM File Explorer
+vim.keymap.set("n", "tt", function()
+    require("nvim-tree.api").tree.toggle({
+        path = "<args>",
+        find_file = false,
+        update_root = false,
+        focus = true,
+    })
+end, { desc = "Tree: [T]oggle File Tree Sidebar" })
+vim.keymap.set("n", "tr", function()
+    require("nvim-tree.api").tree.reload()
+end, { desc = "Tree: [R]eload File System" })
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = vim.api.nvim_create_augroup("nvim-tree", { clear = true }),
+    desc = "Automatically open the file explorer sidebar",
+    ---@param event {data: vim.event.vimenter.data}
+    callback = function(event)
+        cur_window = vim.api.nvim_get_current_win()
+        require("nvim-tree.api").tree.open({
+            path = "<args>",
+            find_file = false,
+            update_root = false,
+            focus = false,
+        })
+        vim.api.nvim_set_current_win(cur_window)
+    end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("default-lsp-attach", { clear = true }),
     callback = function(event)

@@ -1,6 +1,7 @@
 require("plugins.which-key")
 require("plugins.web-devicons")
 require("plugins.tokyonight")
+require("plugins.tree")
 require("plugins.plenary")
 require("plugins.telescope")
 require("plugins.mason")
