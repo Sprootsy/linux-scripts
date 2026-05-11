@@ -40,7 +40,6 @@ vim.pack.add({
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"tree-sitter-cli",
-		"ripgrep",
 	},
 	auto_update = false,
 	run_on_start = true, -- automatically install / update on startup
