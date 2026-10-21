@@ -1,16 +1,9 @@
-local function install_mini()
-    vim.pack.add({
-        "https://github.com/nvim-mini/mini.nvim",
-        {
-            src = "https://github.com/nvim-mini/mini.nvim",
-            version = "stable",
-        },
-    })
-end
-
-if pcall(install_mini) then
-    vim.schedule(function()
-        local _, err = pcall(function()
+return {
+    "nvim-mini/mini.nvim",
+    version = '*',
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        local ok, err = pcall(function()
             -- see https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-comment.md
             require("mini.comment").setup({})
             require("mini.pairs").setup({}) -- note disable blink auto_brackets
@@ -20,8 +13,8 @@ if pcall(install_mini) then
             -- Fancy status line, requires: nvim-web-devicons, git and diff modules
             require("mini.statusline").setup({})
         end)
-        if err then
-            vim.notify("An error occurred while configuring mini modules", vim.log.ERROR)
+        if not ok then
+            vim.notify("An error occurred while configuring mini modules: " .. tostring(err), vim.log.levels.ERROR)
         end
-    end)
-end
+    end,
+}

@@ -1,7 +1,8 @@
-vim.pack.add {
-    "https://github.com/folke/tokyonight.nvim.git",
-    { src = "https://github.com/folke/tokyonight.nvim.git", version = "stable" },
+return {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.cmd.colorscheme("tokyonight")
+    end,
 }
-
--- vim.cmd[[colorscheme tokyonight-storm]]
-vim.cmd[[colorscheme tokyonight]]

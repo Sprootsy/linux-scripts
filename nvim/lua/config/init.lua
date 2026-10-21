@@ -1,5 +1,4 @@
--- require('config.lazynvim')
-require('plugins')
+require('config.lazy')
 
 
 vim.filetype.add({

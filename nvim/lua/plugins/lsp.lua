@@ -1,5 +1,4 @@
-require("mason")
-
-vim.pack.add({
-	{ src = "https://github.com/neovim/nvim-lspconfig" },
-})
+return {
+    "neovim/nvim-lspconfig",
+    dependencies = { "mason-org/mason.nvim" },
+}

@@ -1,7 +1,9 @@
 .PHONY: install
 install:
 	test -d ${HOME}/.config || mkdir ${HOME}/.config
-	cp -vR ../nvim ${HOME}/.config/
+	rsync -av --delete \
+		--exclude 'lazy-lock.json' \
+		../nvim/ ${HOME}/.config/nvim/
 
 .PHONY: clean
 clean:
